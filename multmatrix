@@ -1,0 +1,72 @@
+(defun vector_mult(vec1 vec2)
+(cond 
+	(
+		(or (null vec1) (null vec2))
+		0
+	)
+	(
+		T
+    	(+ (* (car vec1) (car vec2)) (vector_mult (cdr vec1) (cdr vec2)))
+    )
+)
+)
+
+(defun cars (matrix)
+	(if (null matrix)
+      	nil
+      	(cons (car (car matrix)) (cars (cdr matrix))))
+)
+
+(defun cdrs (matrix)
+  	(if (null matrix)
+      	nil
+      	(cons (cdr (car matrix)) (cdrs (cdr matrix))))
+)
+
+(defun transpose (matrix)
+  	(cond 
+		(
+			(null matrix) 
+			nil
+		)
+        	(
+			(null (car matrix))
+			nil
+		)
+        	(
+			T 
+			(cons (cars matrix) (transpose (cdrs matrix)))
+		)
+	)
+)
+
+(defun calc_row(v1 m2)
+	(cond 
+		(
+			(null m2)
+			nil
+		)
+		(
+			T
+			(cons (vector_mult v1 (car m2)) (calc_row v1 (cdr m2)))	
+		)
+	)
+)
+
+(defun mult_matrix (m1 m2)
+	(cond	
+		(
+			(null m1)
+			nil
+		)
+		(
+			T
+			(cons ( calc_row (car m1) m2) (mult_matrix (cdr m1) m2))
+		)
+	)
+
+)
+
+(defun Matrix_mult(m1 m2)
+(mult_matrix m1 (transpose m2))
+)
